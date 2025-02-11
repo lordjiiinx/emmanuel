@@ -24,7 +24,7 @@ import Reason from './components/grey';
 import Backimage from './components/backimage';
 import Copyright from './components/copyright';
 import { useRouter } from 'next/navigation';
-
+import Brightness4RoundedIcon from '@mui/icons-material/Brightness4Rounded';
 
 
 function HideOnScroll(props) {
@@ -59,7 +59,7 @@ export default function HideAppBar(props) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const navItems = ['/', 'about', 'Contact'];
   const drawerWidth = 240;
-
+  const[dar,setdar] = React.useState(false)
  const handleDrawerToggle = () => {
    setMobileOpen((prevState) => !prevState);
  };
@@ -95,8 +95,10 @@ export default function HideAppBar(props) {
   }
   return (
     <React.Fragment>
+      {dar?<CssBaseline/>:null}
       
       <HideOnScroll {...props}>
+
         <AppBar className='bg-purple justify-items-center ' color='transparent'>
         <Toolbar>
           <IconButton
@@ -116,12 +118,19 @@ export default function HideAppBar(props) {
             EMMANUEL
           </Typography>
           <Box sx={{ display: { xs: 'none', sm: 'flex'} }}>
+          <Box sx={{
+            mr:2
+          }} onClick={()=>{
+                    dar?setdar(false):setdar(true)
+                    
+                  }}><Brightness4RoundedIcon/></Box>
+
             {navItems.map((item) => (
               <Box  onClick={()=>{
                    setloading(true)
                    router.push(item)
                    
-              }} key={item} sx={{ color: '#fff', mx:2}}>
+              }} key={item} sx={{  mx:2}}>
                 {item}
               </Box>
             ))}

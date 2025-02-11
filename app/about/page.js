@@ -21,7 +21,7 @@ import { useRouter } from 'next/navigation';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import Copyright from '../components/copyright';
-
+import Brightness4RoundedIcon from '@mui/icons-material/Brightness4Rounded';
 const drawerWidth = 240;
 const navItems = ['/', 'about', 'Contact'];
 
@@ -32,6 +32,7 @@ function DrawerAppBar(props) {
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
+  const[dar,setdar]=React.useState(false)
 const[loading,setloading]= React.useState(false)
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
@@ -41,7 +42,7 @@ const[loading,setloading]= React.useState(false)
       <Divider />
       <List>
         {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
+          <ListItem key={item} className='text-purple' disablePadding>
             <ListItemButton sx={{ textAlign: 'center' }}>
               <ListItemText onClick={()=>{router.push(item)}} primary={item} />
             </ListItemButton>
@@ -76,7 +77,7 @@ if(loading){
 }
   return (
     <Box sx={{ display: 'flex' }}>
-      
+      {dar?<CssBaseline/>:null}
       <AppBar className='bg-purple ' component="nav" color='transparent'>
         <Toolbar>
           <IconButton
@@ -95,14 +96,24 @@ if(loading){
           >
             EMMANUEL
           </Typography>
-          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+          <Box sx={{ display: { xs: 'none', sm: 'flex'} }}
+          >
+          <Box sx={{
+            mr:2
+          }} onClick={()=>{
+                    dar?setdar(false):setdar(true)
+                    
+                  }}><Brightness4RoundedIcon/></Box>
+
+            
             {navItems.map((item) => (
-              <Button onClick={()=>{
-                   setloading(true)   
+              <Box  onClick={()=>{
+                   setloading(true)
                    router.push(item)
-              }} key={item} sx={{ color: '#fff' }}>
+                   
+              }} key={item} sx={{  mx:2}}>
                 {item}
-              </Button>
+              </Box>
             ))}
           </Box>
         </Toolbar>
