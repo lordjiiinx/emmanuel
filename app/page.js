@@ -1,101 +1,227 @@
-import Image from "next/image";
+'use client'
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import MenuIcon from '@mui/icons-material/Menu';
+import { Divider } from '@mui/material';
+import * as React from 'react';
+import PropTypes from 'prop-types';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import CssBaseline from '@mui/material/CssBaseline';
+import useScrollTrigger from '@mui/material/useScrollTrigger';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import Slide from '@mui/material/Slide';
+import { styled } from '@mui/material/styles';
+import Paper from '@mui/material/Paper';
+import Example from './components/paper';
+import Reason from './components/grey';
+import Backimage from './components/backimage';
+import Copyright from './components/copyright';
+import { useRouter } from 'next/navigation';
 
-export default function Home() {
+
+
+function HideOnScroll(props) {
+  const { children, window } = props;
+  // Note that you normally won't need to set the window ref as useScrollTrigger
+  // will default to window.
+  // This is only being set here because the demo is in an iframe.
+  const trigger = useScrollTrigger({
+    target: window ? window() : undefined,
+  });
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <Slide appear={false} direction="down" in={!trigger}>
+      {children ?? <div />}
+    </Slide>
+  );
+}
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+HideOnScroll.propTypes = {
+  children: PropTypes.element,
+  /**
+   * Injected by the documentation to work in an iframe.
+   * You won't need it on your project.
+   */
+  window: PropTypes.func,
+};
+
+
+
+export default function HideAppBar(props) {
+  const { children, window } = props;
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const navItems = ['/', 'about', 'Contact'];
+  const drawerWidth = 240;
+
+ const handleDrawerToggle = () => {
+   setMobileOpen((prevState) => !prevState);
+ };
+
+ const [loading,setloading]= React.useState(false)
+
+ const drawer = (
+   <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
+     <Typography variant="h6" sx={{ my: 2 }}>
+       EMMANUEL
+     </Typography>
+     <Divider />
+     <List>
+       {navItems.map((item) => (
+         <ListItem key={item} disablePadding>
+           <ListItemButton sx={{ textAlign: 'center',mx:2 }}>
+             <ListItemText onClick={()=>{router.push(item)}} primary={item} />
+           </ListItemButton>
+         </ListItem>
+       ))}
+     </List>
+   </Box>
+ );
+
+ const container = window !== undefined ? () => window().document.body : undefined;
+
+
+  const router = useRouter()
+
+  if(loading){
+   // console.log(loading)
+    return(<p>loading</p>)
+  }
+  return (
+    <React.Fragment>
+      
+      <HideOnScroll {...props}>
+        <AppBar className='bg-purple justify-items-center ' color='transparent'>
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2, display: { sm: 'none' } }}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            <MenuIcon />
+          </IconButton>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
           >
-            Read our docs
-          </a>
+            EMMANUEL
+          </Typography>
+          <Box sx={{ display: { xs: 'none', sm: 'flex'} }}>
+            {navItems.map((item) => (
+              <Box  onClick={()=>{
+                   setloading(true)
+                   router.push(item)
+                   
+              }} key={item} sx={{ color: '#fff', mx:2}}>
+                {item}
+              </Box>
+            ))}
+          </Box>
+        </Toolbar>
+        </AppBar>
+        
+      </HideOnScroll>
+      <Toolbar />
+      <nav>
+        <Drawer
+          container={container}
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+          sx={{
+            display: { xs: 'block', sm: 'none' },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+          }}
+        >
+          {drawer}
+        </Drawer>
+      </nav>
+
+      <Container className='justify-items-center'>
+        <div className='bg-adm w-full justify-items-center h-80'>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+        <Reason heading1="reasons" heading2='guide'>
+          <div className='grid grid-cols-3 gap-2 '>
+<Backimage containerStyles='text-center h-auto bg-chess' > 
+           Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique unde
+          fugit veniam eius, perspiciatis sunt? Corporis qui ducimus quibusdam,
+          aliquam dolore excepturi quae. Distinctio enim at eligendi perferendis in
+          cum quibusdam sed quae, accusantium et aperiam? Quod itaque exercitationem,
+          at ab sequi qui modi delectus quia corrupti alias distinctio nostrum.
+          Minima ex dolor modi inventore sapiente necessitatibus aliquam fuga et. Sed
+          numquam quibusdam at officia sapiente porro maxime corrupti perspiciatis
+          asperiores, exercitationem eius nostrum consequuntur iure aliquam itaque,
+          assumenda et! Quibusdam temporibus beatae doloremque voluptatum doloribus
+          soluta accusamus porro reprehenderit eos inventore facere, fugit, molestiae
+</Backimage>
+<Backimage containerStyles=''>  
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique unde
+          fugit veniam eius, perspiciatis sunt? Corporis qui ducimus quibusdam,
+          aliquam dolore excepturi quae. Distinctio enim at eligendi perferendis in
+          cum quibusdam sed quae, accusantium et aperiam? Quod itaque exercitationem,
+          at ab sequi qui modi delectus quia corrupti alias distinctio nostrum.
+          Minima ex dolor modi inventore sapiente necessitatibus aliquam fuga et. Sed
+          numquam quibusdam at officia sapiente porro maxime corrupti perspiciatis
+          asperiores, exercitationem eius nostrum consequuntur iure aliquam itaque,
+          assumenda et! Quibusdam temporibus beatae doloremque voluptatum doloribus
+ </Backimage>
+<Backimage containerStyles=''>          Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique unde
+          fugit veniam eius, perspiciatis sunt? Corporis qui ducimus quibusdam,
+          aliquam dolore excepturi quae. Distinctio enim at eligendi perferendis in
+          cum quibusdam sed quae, accusantium et aperiam? Quod itaque exercitationem,
+          at ab sequi qui modi delectus quia corrupti alias distinctio nostrum.
+          Minima ex dolor modi inventore sapiente necessitatibus aliquam fuga et. Sed
+          numquam quibusdam at officia sapiente porro maxime corrupti perspiciatis
+          asperiores, exercitationem eius nostrum consequuntur iure aliquam itaque,
+          assumenda et! Quibusdam temporibus beatae doloremque voluptatum doloribus
+          soluta accusamus porro reprehenderit eos inventore facere, fugit, molestiae
+          ab officiis illo voluptates recusandae. Vel dolor nobis eius, ratione atque
+</Backimage>
+
+</div>
+</Reason>
+
+<Box component='div' className='sm:block w-full md:grid grid-cols-3 gap-2' >
+  <Example heading1='why join us' heading2='reasons'  texts='
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique unde
+          fugit veniam eius, perspiciatis sunt? Corporis qui ducimus quibusdam,
+          aliquam dolore excepturi quae. Distinctio enim at eligendi perferendis in
+          cum quibusdam sed quae, accusantium et aperiam? Quod itaque exercitationem,
+          at ab sequi qui modi delectus quia corrupti alias distinctio nostrum.
+          Minima ex dolor modi inventore sapiente necessitatibus aliquam fuga et. Sed
+          numquam quibusdam at officia sapiente porro maxime corrupti perspiciatis
+          asperiores, exercitationem eius nostrum consequuntur iure aliquam itaque,
+          assumenda et! Quibusdam temporibus beatae doloremque voluptatum doloribus
+          soluta accusamus porro reprehenderit eos inventore facere, fugit, molestiae
+' hov={true}>
+
+  </Example>
+
+  <Box component='div' className='bg-reason md:col-span-2' sx={{
+    height:719
+
+  }}></Box>
+</Box>
+<Copyright />
+
+      
+
+
+      </Container>
+
+      
+    </React.Fragment>
   );
 }
