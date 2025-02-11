@@ -20,7 +20,7 @@ import Backimage from '../components/backimage';
 import { useRouter } from 'next/navigation';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
-
+import Copyright from '../components/copyright';
 
 const drawerWidth = 240;
 const navItems = ['/', 'about', 'Contact'];
@@ -164,6 +164,9 @@ heading1='about us' heading2='brief history' texts='
           soluta accusamus porro reprehenderit eos inventore facere, fugit, molestiae
 ' 
 ></Example>
+
+<Copyright />
+
 
         </Container>
       </Box>
