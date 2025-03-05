@@ -4,7 +4,7 @@ import { Box, ThemeProvider, createTheme } from '@mui/system';
 const theme = createTheme({
   palette: {
     background: {
-      paper: '#FFD2A4',
+      paper: 'transparent',
     },
     text: {
       primary: '#173A5E',
@@ -48,10 +48,16 @@ export default function Example({heading1,heading2,texts,hov}) {
           
         ]}
       >
-        <Box sx={{ color: 'text.primary', fontSize: {
-          sm : 24,
-          md : 34
-        }, fontWeight: 'medium' }}>
+        <Box
+         sx={{ color: 'text.primary',
+         fontWeight: 'medium',
+         fontSize: {
+          xs:15,
+          sm:24
+        },
+
+         
+         }}>
           {heading1}
         </Box>
         <Box
@@ -61,9 +67,10 @@ export default function Example({heading1,heading2,texts,hov}) {
             fontWeight: 'bold',
             mx: 0.5,
             fontSize: {
-              xs:15,
-              sm:24
+              sm : 24,
+              md : 34
             },
+    
             
           }}
         >
